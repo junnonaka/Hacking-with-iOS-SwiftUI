@@ -18,6 +18,11 @@ struct ContentView: View {
     
     @State private var score = 0
     
+    @State private var animationAmount = 0.0
+    
+    @State private var tapButton = 0
+    
+    @State private var opacity = 1.0
     var body: some View {
         ZStack{
             RadialGradient(stops: [
@@ -44,12 +49,19 @@ struct ContentView: View {
                     ForEach(0..<3){ number in
                         Button {
                             flagTapped(number)
+                            withAnimation {
+                                animationAmount += 360
+                                opacity = 0.25
+                            }
                         } label: {
                             Image(countries[number])
                                 .renderingMode(.original)
                                 .clipShape(Capsule())
                                 .shadow(radius: 5)
                         }
+                        .rotation3DEffect(Angle(degrees: number == tapButton ? animationAmount : 0), axis: (x:0,y:1,z:0))
+                        .opacity(number != tapButton ? opacity : 1)
+                        
                     }
                 }
                 .frame(maxWidth:.infinity)
@@ -67,6 +79,7 @@ struct ContentView: View {
         .alert(scoreTitle, isPresented: $showingScore) {
             Button {
                 askQuestion()
+                opacity = 1
             } label: {
                 Text("Continue")
             }
@@ -84,8 +97,10 @@ struct ContentView: View {
             scoreTitle = "Wrong"
             score -= 1
             correctFrag = "this is \(countries[correctAnswer])'s frag"
-
+            
         }
+        print("tup Num \(number)")
+        tapButton = number
         showingScore = true
     }
     
