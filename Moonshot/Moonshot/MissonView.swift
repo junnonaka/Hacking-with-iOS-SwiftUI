@@ -15,7 +15,7 @@ struct MissonView: View {
     }
     
     let crew:[CrewMember]
-    
+
     init(mission:Mission,astronauts:[String:Astronaut]){
         self.mission = mission
         self.crew = mission.crew.map({ member in
@@ -27,7 +27,7 @@ struct MissonView: View {
         })
     }
     
-    
+
     let mission:Mission
     
     
@@ -44,7 +44,9 @@ struct MissonView: View {
                         .frame(height: 2)
                         .foregroundColor(.darkBackground)
                         .padding(.vertical)
-                        
+                    Text("\(mission.formattedLaunchDate)")
+                        .font(.system(size: 30))
+                    Spacer()
                     VStack(alignment:.leading) {
                         Text("Mission Highlights")
                             .font(.title.bold())
@@ -60,31 +62,30 @@ struct MissonView: View {
                         HStack{
                             ForEach(crew,id:\.role) { crewMember in
                                 NavigationLink {
-                                    Text("Astronaut details")
+                                    AstronautView(astronaut: crewMember.astronaut)
                                 } label: {
-                                    HStack{
-                                        Image(crewMember.astronaut.id)
-                                            .resizable()
-                                            .frame(width: 104,height: 72)
-                                            .clipShape(Capsule())
-                                            .overlay(
-                                                Capsule()
-                                                    .strokeBorder(.white,lineWidth: 1)
-                                            )
-                                        VStack(alignment: .leading) {
-                                            Text(crewMember.astronaut.name)
-                                                .foregroundColor(.white)
-                                                .font(.headline)
-                                            Text(crewMember.role)
-                                                .foregroundColor(.secondary)
-                                            
-                                        }
-                                    }
+                                    ClueView(crewMember: crewMember)
+//                                    HStack{
+//                                        Image(crewMember.astronaut.id)
+//                                            .resizable()
+//                                            .frame(width: 104,height: 72)
+//                                            .clipShape(Capsule())
+//                                            .overlay(
+//                                                Capsule()
+//                                                    .strokeBorder(.white,lineWidth: 1)
+//                                            )
+//                                        VStack(alignment: .leading) {
+//                                            Text(crewMember.astronaut.name)
+//                                                .foregroundColor(.white)
+//                                                .font(.headline)
+//                                            Text(crewMember.role)
+//                                                .foregroundColor(.secondary)
+//
+//                                        }
+//                                    }
                                     .padding()
                                 }
 
-                                
-                                
                             }
                         }
                     }

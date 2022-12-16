@@ -16,52 +16,27 @@ struct ContentView: View {
     let astronauts:[String:Astronaut] = Bundle.main.decode("astronauts.json")
     let missions:[Mission] = Bundle.main.decode("missions.json")
     
+    @State private var showingGrid = true
     
     var body:some View{
         NavigationView {
-            ScrollView {
-                LazyVGrid(columns: columns) {
-                    ForEach(missions) { mission in
-                        NavigationLink {
-                            MissonView(mission: mission, astronauts: astronauts)
-                        } label: {
-                            VStack{
-                                Image(mission.image)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100,height: 100)
-                                    .padding()
-                                VStack{
-                                    Text(mission.displayName)
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                    Text(mission.formattedLaunchDate)
-                                        .font(.caption)
-                                        .foregroundColor(.white)
-                                }
-                                .padding(.vertical)
-                                .frame(maxWidth:.infinity)
-                                .background(.lightBackgrounc)
-                            }
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.lightBackgrounc)
-                        )
-
+                Group{
+                    if showingGrid{
+                        GridLayout(astronauts: astronauts, missions: missions)
+                    }else{
+                        ListLayout(missions: missions, astronauts: astronauts)
                     }
                 }
-                .padding([.horizontal,.vertical])
+                .navigationTitle("MoonShot")
+                .preferredColorScheme(.dark)
+                .background(.darkBackground)
             }
-            .navigationTitle("MoonShot")
-            .preferredColorScheme(.dark)
-            .background(.darkBackground)
+            
         }
 
     }
     
-}
+//}
 //ShapeStyleはbackground()で使うもの。
 //Colorの拡張だがbackgroundでも使えるようにShapeStyleの拡張として使う
 extension ShapeStyle where Self == Color{
