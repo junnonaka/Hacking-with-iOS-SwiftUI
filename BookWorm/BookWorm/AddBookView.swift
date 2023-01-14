@@ -52,6 +52,7 @@ struct AddBookView: View {
                         newBook.raiting = Int16(rating)
                         newBook.genre = genre
                         newBook.review = review
+                        newBook.author = author
                         
                         try? moc.save()
                         dismiss()

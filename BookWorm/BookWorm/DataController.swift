@@ -9,14 +9,17 @@ import Foundation
 
 class DataController:ObservableObject{
     //CoreDataをロードする準備
-    let container = NSPersistentContainer(name: "Bookworm")
+    let container = NSPersistentContainer(name: "CoreDataProject")
     
     init(){
         //CoreDataへのアクセス：この時点では読み出していない
         container.loadPersistentStores { description, error in
             if let error = error{
                 print("Core Data failed to load: \(error.localizedDescription)")
+                return
             }
         }
+        
+        self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
 }
